@@ -1,7 +1,7 @@
 import { useDispatch,useSelector } from "react-redux"
 import { handlecount } from "../slice/countslice";
 import { useEffect, useState } from "react";
-import { handleprint } from "../slice/inputslice";
+import { handleediting, handleprint } from "../slice/inputslice";
 import { handledeleting } from "../slice/inputslice";
 
 function Countbutton()
@@ -9,7 +9,7 @@ function Countbutton()
     const dispatch=useDispatch();
     const comment=useSelector((state)=>state.input.value);
     const Text=useSelector((state)=>state.input.Text);
-    const[text,settext]=useState("");
+    const [edit,setedit]=useState(null);
     // const[Text,setText]=useState([]);
     useEffect(()=>{
         console.log(Text);
@@ -30,20 +30,41 @@ function Countbutton()
         console.log(id);
         dispatch(handledeleting(id));
     }
+    function handleedit(item)
+    {
+        // console.log(item);
+        let cpy={...item,
+            current:comment
+        }
+        setedit(cpy)
+        
+    }
+    function handleeditclick()
+    {
+        dispatch(handleediting(edit))
+        setedit(null);
+    }
+
+
     return(
         <>
-        <p>{text}</p>
         {
             Text&&Text.length>0?Text.map(item=>{
                 return(<>
                 <p style={{margin:"20px"}} key={item.id}>{item.com}</p>
                     <button onClick={()=>handledelete(item.id)}>delete</button>
+                    <button onClick={()=>handleedit(item)}>Edit</button>
                 
                 </>)
                 
             }):(<p>Nothing yet</p>)
         }
-        <button onClick={()=>handleclick()}>count</button>
+        <button onClick={()=>edit?handleeditclick():handleclick()}>
+        {
+            edit?'add edited': 'click'
+        }
+
+        </button>
         </>
         
     )
