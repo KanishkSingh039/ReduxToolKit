@@ -7,7 +7,10 @@ import { handledeleting } from "../slice/inputslice";
 function Countbutton()
 {
     const dispatch=useDispatch();
+    //usedispatch uses to get the access for functions
     const comment=useSelector((state)=>state.input.value);
+    //useselector uses to get the initial state for slice 
+    //here in getting the state input the name of slice we provided in store
     const Text=useSelector((state)=>state.input.Text);
     const [edit,setedit]=useState(null);
     // const[Text,setText]=useState([]);
